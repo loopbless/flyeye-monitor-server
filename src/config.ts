@@ -2,8 +2,8 @@ import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOpti
 
 export const database: MysqlConnectionOptions = {
   type: 'mysql',
-  host: '172.0.0.1',
-  port: 3302,
+  host: 'localhost',
+  port: 3306,
   username: 'root',
   password: 'root',
   logging: true,
@@ -17,4 +17,9 @@ export const database: MysqlConnectionOptions = {
 export const jwtConfig = {
   secret: '!.abstcomjklfdmsa.bt_secret',
   expiresIn: '1h',
+};
+
+export const aes = {
+  key: '0vApxLk5G3PAsJrM',
+  iv: 'FnJL7EAzVqWjcaY7',
 };

@@ -26,6 +26,9 @@ export class AlarmEntity {
   @Column('simple-array', { comment: '数据标签' })
   tags: string[];
 
+  @Column('text', { comment: '模板' })
+  template: string;
+
   @Column('tinyint', { default: 0, comment: '0 未开启；1 已开启' })
   status: number;
 

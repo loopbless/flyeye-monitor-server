@@ -6,6 +6,7 @@ import { JwtAuthGuard } from '@/auth/guards';
 import { AppDto } from './application.modal';
 import { join } from 'path';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
+import { aesEncrypt } from '@/utils';
 
 @UseGuards(JwtAuthGuard)
 @Controller('apps')
@@ -34,7 +35,8 @@ export class ApplicationController {
       return new HttpException('sourcemap只能上传zip类型文件', HttpStatus.BAD_REQUEST);
     }
     data.sourceMapPath = this.upload(file);
-    return await this.app.insert(data)
+    const app = await this.app.insert(data);
+    return aesEncrypt(app.identifiers[0]);
   }
 
   private upload(file) {
@@ -42,7 +44,7 @@ export class ApplicationController {
     if(!existsSync(path)) {
       mkdirSync(path);
     }
-    path = join(path, `${new Date().getTime()}_${file.originalname}`)
+    path = join(path, `${new Date().getTime()}_${file.originalname}`);
     const writeImage = createWriteStream(path, {encoding: 'utf8'});
     writeImage.write(file.buffer);
     return path;

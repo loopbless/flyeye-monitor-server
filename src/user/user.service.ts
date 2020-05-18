@@ -21,8 +21,13 @@ export class UserService {
   }
 
   async findUserName(username: string) {
-    const {id, password, avatar, mobile, email} = await this.userRepository.findOne({username});
-    return {id, username, password, avatar, mobile, email}
+    const user = await this.userRepository.findOne({username});
+    if(user) {
+      const {id, password, avatar, mobile, email} = user;
+      return {id, username, password, avatar, mobile, email}
+    } else {
+      throw new HttpException('用户名或密码不正确！', HttpStatus.BAD_REQUEST);
+    }
   }
 
   async insert(userDto: UserDto) {
