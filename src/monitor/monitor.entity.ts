@@ -1,6 +1,10 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, AfterLoad} from 'typeorm';
 import { MonitorType } from './monitor.enum';
 import { VersionEntity } from '@/version/version.entity';
+import { aesDecrypt } from '@/utils/utils';
+import * as UAParser from 'ua-parser-js';
+import { ApplicationEntity } from '@/application/application.entity';
+
 
 @Entity('monitor')
 export class MonitorEntity {
@@ -11,8 +15,11 @@ export class MonitorEntity {
   @Column({length: 20, comment: '上报时间'})
   timestamp: string;
 
-  @Column({comment: '运行环境信息'})
-  agent: string;
+  @Column({comment: '语言环境信息'})
+  platform: string;
+
+  @Column({name: 'user_agent', comment: '运行环境信息'})
+  userAgent: string;
 
   @Column({name: 'current_url', comment: '当前路径'})
   currentUrl: string;
@@ -38,21 +45,36 @@ export class MonitorEntity {
   @Column('simple-json', {comment: '数据信息'})
   data: any;
 
+  @AfterLoad()
+  handle() {
+    const parser = new UAParser();
+    parser.setUA(this.userAgent);
+    this.userAgent = parser.getResult();
+  }
+
   @Column({default: 0, comment: '处理状态'})
   status: number;
 
   @ManyToOne(() => VersionEntity, version => version.monitors)
-  @JoinColumn({ name: 'app_id' })
+  @JoinColumn({ name: 'app_version_id' })
   appVersion: VersionEntity; // 数据对应app版本ID
+
+  @ManyToOne(() => ApplicationEntity, app => app.monitors)
+  @JoinColumn({ name: 'app_id' })
+  app: ApplicationEntity; // 数据对应app版本ID
 
   constructor(data: any) {
     if(data) {
-      this.appVersion = {id: data.appId} as any;
+      this.appVersion = data.appVersion;
+      this.app = data.app;
       this.timestamp = data.timestamp;
-      this.agent = data.agent;
+      this.platform = data.platform;
+      this.userAgent = data.userAgent;
       this.currentUrl = data.currentUrl;
       this.fromUrl = data.fromUrl;
-      this.accountData = JSON.parse(data.accountData);
+      if(data.accountData) {
+        this.accountData = JSON.parse(data.accountData);
+      }
       if(data.type) {
         this.type = data.type;
       }

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards, Post, UseInterceptors, Body, UploadedFile, HttpException, HttpStatus, Res, Req } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, Post, UseInterceptors, Body, UploadedFile, HttpException, HttpStatus, Res, Req, Query } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { VersionService } from '@/version/version.service';
 import { ApplicationService } from './application.service';
@@ -6,7 +6,7 @@ import { JwtAuthGuard } from '@/auth/guards';
 import { AppDto } from './application.modal';
 import { join } from 'path';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
-import { aesEncrypt } from '@/utils';
+import { aesEncrypt } from '@/utils/utils';
 
 @UseGuards(JwtAuthGuard)
 @Controller('apps')
@@ -15,11 +15,6 @@ export class ApplicationController {
 
   constructor(private app: ApplicationService,
               private version: VersionService) {}
-
-  @Get(':id')
-  async find(@Param('id') id: number) {
-    return await this.version.findByAppId(id);
-  }
 
   @Get()
   async findAll(@Req() req, @Res() res) {
@@ -30,13 +25,14 @@ export class ApplicationController {
 
   @Post()
   @UseInterceptors(FileInterceptor('sourceMap'))
-  async insert(@UploadedFile() file, @Body() data: AppDto) {
+  async insert(@UploadedFile() file, @Body() data: AppDto, @Req() req) {
     if(file.mimetype!=='application/zip') {
       return new HttpException('sourcemap只能上传zip类型文件', HttpStatus.BAD_REQUEST);
     }
     data.sourceMapPath = this.upload(file);
-    const app = await this.app.insert(data);
-    return aesEncrypt(app.identifiers[0]);
+    data.user = req.user;
+    const version = await this.app.insert(data);
+    return {appId: aesEncrypt(version.application.id + ',' +version.id)};
   }
 
   private upload(file) {
@@ -49,4 +45,15 @@ export class ApplicationController {
     writeImage.write(file.buffer);
     return path;
   }
+
+  @Get('monitors')
+  async countMonitor() {
+    return await this.app.countMonitors();
+  }
+
+  @Get(':id')
+  async find(@Param('id') id: number) {
+    return await this.app.find(id);
+  }
+
 }

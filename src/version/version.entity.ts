@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, ManyToOne, AfterLoad } from 'typeorm';
 import { ApplicationEntity } from '@/application/application.entity';
 import { MonitorEntity } from '@/monitor/monitor.entity';
+import { aesEncrypt } from '@/utils/utils';
 
 @Entity('version')
 export class VersionEntity {
@@ -23,4 +24,11 @@ export class VersionEntity {
 
   @OneToMany(() => MonitorEntity, monitor => monitor.appVersion)
   monitors: MonitorEntity[];
+
+  appId: string;
+
+  @AfterLoad()
+  newAppId() {
+    this.appId = aesEncrypt(this.id);
+  }
 }

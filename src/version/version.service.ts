@@ -19,8 +19,8 @@ export class VersionService {
     .getOne();
   }
 
-  async create(source: string) {
-    const result = await this.appVersionRepository.insert({sourceMapPath: source});
+  async create(appId: number, source: string, tags: string[]) {
+    const result = await this.appVersionRepository.insert({sourceMapPath: source, tags, application: {id: appId}});
     return result.identifiers[0];
   }
 

@@ -3,7 +3,7 @@ import { LocalAuthGuard } from '@/auth/guards';
 import { AuthService } from './auth/auth.service';
 import { SourceMapConsumer } from 'source-map';
 import * as argon2 from 'argon2';
-import { aesDecrypt, aesEncrypt } from '@/utils';
+import { aesDecrypt, aesEncrypt } from '@/utils/utils';
 
 @Controller()
 export class AppController {
@@ -13,10 +13,10 @@ export class AppController {
   @Get()
   async getHello() {
     const key = 'flyeye';
-    let encrypt = aesEncrypt(key); // 加密
+    const encrypt = aesEncrypt(key); // 加密
     console.log(encrypt); // 998118c1207f9e6fa5ee610c5bfd8ef0
 
-    let data = aesDecrypt(encrypt); // 解密
+    const data = aesDecrypt('1aade23c045230cd9a367ae2c72ce07c'); // 解密
     console.log(data); // data
     return argon2.hash('111111');
   }

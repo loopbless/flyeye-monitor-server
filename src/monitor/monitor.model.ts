@@ -10,23 +10,25 @@ export class MonitorDto {
   readonly timestamp: string;
 
   @IsNotEmpty()
-  readonly agent: string;
+  readonly platform: string;
+
+  @IsNotEmpty()
+  userAgent: string;
 
   @IsNotEmpty()
   readonly currentUrl: string;
 
   readonly fromUrl?: string;
 
-  @IsNotEmpty()
   readonly accountData: string;
 
   @IsNotEmpty()
   readonly tags: string[];
 
-  readonly location?: string;
+  location?: string;
   
   @IsNotEmpty()
-  readonly data: any;
+  data: any;
 }
 
 export class MonitorPageDto extends PageDto {

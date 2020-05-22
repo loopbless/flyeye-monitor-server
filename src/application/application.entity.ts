@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColum
 import { VersionEntity } from '@/version/version.entity';
 import { UserEntity } from '@/user/user.entity';
 import { AlarmEntity } from '@/alarm/alarm.entity';
+import { MonitorEntity } from '@/monitor/monitor.entity';
 
 @Entity('application')
 export class ApplicationEntity {
@@ -19,17 +20,13 @@ export class ApplicationEntity {
   @JoinColumn({ name: 'create_by'})
   user: UserEntity;
 
-  @Column({ name: 'app_token'})
-  appToken: string;
-
-  @BeforeInsert()
-  generateToken() {
-    this.appToken = '';
-  }
-
   @OneToMany(() => VersionEntity, version => version.application)
   versions: VersionEntity[];
 
-  @OneToMany(() => AlarmEntity, version => version.app)
+  @OneToMany(() => AlarmEntity, alarm => alarm.app)
   alarms: AlarmEntity[];
+
+  @OneToMany(() => MonitorEntity, monitor => monitor.app)
+  monitors: MonitorEntity[];
+  
 }
