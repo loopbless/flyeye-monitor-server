@@ -11,5 +11,5 @@ import { NotifyCacheService } from './notify.service';
   providers: [AlarmService, NotifyCacheService],
   exports: [AlarmService]
 })
-export class WebhookModule {
+export class AlarmModule {
 }

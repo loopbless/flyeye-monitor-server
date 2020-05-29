@@ -1,13 +1,12 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, AfterLoad} from 'typeorm';
-import { MonitorType } from './monitor.enum';
+import { EventsType } from './events.enum';
 import { VersionEntity } from '@/version/version.entity';
-import { aesDecrypt } from '@/utils/utils';
 import * as UAParser from 'ua-parser-js';
 import { ApplicationEntity } from '@/application/application.entity';
 
 
-@Entity('monitor')
-export class MonitorEntity {
+@Entity('events')
+export class EventsEntity {
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,7 +15,7 @@ export class MonitorEntity {
   timestamp: string;
 
   @Column({comment: '语言环境信息'})
-  platform: string;
+  language: string;
 
   @Column({name: 'user_agent', comment: '运行环境信息'})
   userAgent: string;
@@ -30,8 +29,8 @@ export class MonitorEntity {
   @Column({name: 'account_data', length: 20, comment: '账户ID'})
   accountData: string;
 
-  @Column({default: MonitorType.ERROR, comment: '数据类型'})
-  type: MonitorType;
+  @Column({default: EventsType.ERROR, comment: '数据类型'})
+  type: EventsType;
 
   @Column({ name: 'create_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', comment: '创建时间'})
   createAt: Date;
@@ -55,11 +54,11 @@ export class MonitorEntity {
   @Column({default: 0, comment: '处理状态'})
   status: number;
 
-  @ManyToOne(() => VersionEntity, version => version.monitors)
+  @ManyToOne(() => VersionEntity, version => version.events)
   @JoinColumn({ name: 'app_version_id' })
   appVersion: VersionEntity; // 数据对应app版本ID
 
-  @ManyToOne(() => ApplicationEntity, app => app.monitors)
+  @ManyToOne(() => ApplicationEntity, app => app.events)
   @JoinColumn({ name: 'app_id' })
   app: ApplicationEntity; // 数据对应app版本ID
 
@@ -68,7 +67,7 @@ export class MonitorEntity {
       this.appVersion = data.appVersion;
       this.app = data.app;
       this.timestamp = data.timestamp;
-      this.platform = data.platform;
+      this.language = data.language;
       this.userAgent = data.userAgent;
       this.currentUrl = data.currentUrl;
       this.fromUrl = data.fromUrl;

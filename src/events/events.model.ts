@@ -1,7 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 import { PageDto } from '@/common/page.dto';
 
-export class MonitorDto {
+export class EventsDto {
 
   @IsNotEmpty()
   readonly appId: string;
@@ -10,7 +10,7 @@ export class MonitorDto {
   readonly timestamp: string;
 
   @IsNotEmpty()
-  readonly platform: string;
+  readonly language: string;
 
   @IsNotEmpty()
   userAgent: string;
@@ -31,7 +31,7 @@ export class MonitorDto {
   data: any;
 }
 
-export class MonitorPageDto extends PageDto {
+export class EventsPageDto extends PageDto {
   @IsNotEmpty()
   readonly appId: string; // app对应版本id
 

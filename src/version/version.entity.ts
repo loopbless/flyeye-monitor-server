@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, ManyToOne, AfterLoad } from 'typeorm';
 import { ApplicationEntity } from '@/application/application.entity';
-import { MonitorEntity } from '@/monitor/monitor.entity';
+import { EventsEntity } from '@/events/events.entity';
 import { aesEncrypt } from '@/utils/utils';
 
 @Entity('version')
@@ -22,8 +22,8 @@ export class VersionEntity {
   @JoinColumn({ name: 'app_id' })
   application: ApplicationEntity;
 
-  @OneToMany(() => MonitorEntity, monitor => monitor.appVersion)
-  monitors: MonitorEntity[];
+  @OneToMany(() => EventsEntity, events => events.appVersion)
+  events: EventsEntity[];
 
   appId: string;
 

@@ -3,7 +3,7 @@ import { Repository, getManager, AdvancedConsoleLogger } from 'typeorm';
 import { AlarmEntity } from './alarm.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AlarmDto, AlarmPageDto } from './alarm.modal';
-import { MonitorEntity } from '@/monitor/monitor.entity';
+import { EventsEntity } from '@/events/events.entity';
 import { DingdingBot } from '@/utils/dingdingbot.util';
 import { NotifyCacheService } from './notify.service';
 import * as ejs from 'ejs';
@@ -69,7 +69,7 @@ export class AlarmService {
     return await entityManager.save(alarmEntity);
   }
 
-  notify(alarm: AlarmEntity, data: MonitorEntity) {
+  notify(alarm: AlarmEntity, data: EventsEntity) {
     this.notifyCache.push({ ...alarm, content: data });
   }
 

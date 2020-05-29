@@ -46,9 +46,9 @@ export class ApplicationController {
     return path;
   }
 
-  @Get('monitors')
-  async countMonitor() {
-    return await this.app.countMonitors();
+  @Get('events')
+  async countEvents() {
+    return await this.app.countEvents();
   }
 
   @Get(':id')

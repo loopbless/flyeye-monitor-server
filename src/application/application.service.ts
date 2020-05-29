@@ -50,9 +50,9 @@ export class ApplicationService {
     return version;
   }
 
-  async countMonitors() {
+  async countEvents() {
     const queryResult = await this.appRepository.query(
-      `SELECT app.id, app.name, monitor.tags, COUNT(app.id) as nums FROM application app RIGHT JOIN monitor ON monitor.app_id = app.id GROUP BY app.id, monitor.tags`,
+      `SELECT app.id, app.name, events.tags, COUNT(app.id) as nums FROM application app RIGHT JOIN events ON events.app_id = app.id GROUP BY app.id, events.tags`,
     );
     return queryResult.map(item => ({ ...item, nums: parseInt(item.nums) }));
   }

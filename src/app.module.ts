@@ -4,20 +4,22 @@ import { AppController } from './app.controller';
 import { database } from './config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { MonitorModule } from './monitor/monitor.module';
-import { WebhookModule } from './alarm/alarm.module';
+import { EventsModule } from './events/events.module';
+import { AlarmModule } from './alarm/alarm.module';
 import { VersionModule } from './version/version.module';
 import { ApplicationModule } from './application/application.module';
+import { FrameworkModule } from './framework/framework.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(database),
     AuthModule,
     UserModule, 
-    MonitorModule,
-    WebhookModule,
+    EventsModule,
+    AlarmModule,
     VersionModule,
-    ApplicationModule
+    ApplicationModule,
+    FrameworkModule
   ],
   controllers: [AppController],
 })

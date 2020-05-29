@@ -3,6 +3,7 @@ import { IsEmail } from 'class-validator';
 import * as argon2 from 'argon2';
 import { ApplicationEntity } from '@/application/application.entity';
 import { AlarmEntity } from '@/alarm/alarm.entity';
+import { FrameworkEntity } from '@/framework/framework.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -35,7 +36,7 @@ export class UserEntity {
   @OneToMany(() => ApplicationEntity, app => app.user)
   apps: ApplicationEntity[];
 
-  @OneToMany(() => AlarmEntity, webhook => webhook.user)
+  @OneToMany(() => AlarmEntity, alarm => alarm.user)
   alarms: AlarmEntity[];
 
   @BeforeInsert()

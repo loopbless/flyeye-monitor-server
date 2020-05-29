@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { UserEntity } from '@/user/user.entity';
-import { MonitorType } from '@/monitor/monitor.enum';
+import { EventsType } from '@/events/events.enum';
 import { PageDto } from '@/common/page.dto';
 
 export class AlarmDto {
@@ -14,7 +14,7 @@ export class AlarmDto {
   @IsNotEmpty()
   template: string;
   @IsNotEmpty()
-  readonly dataType: MonitorType;
+  readonly dataType: EventsType;
   user: UserEntity;
   @IsNotEmpty()
   readonly dataTags: string[];

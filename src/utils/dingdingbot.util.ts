@@ -6,7 +6,7 @@ export class DingdingBot {
     this._webhookUrl = webhookUrl;
   }
 
-  public pushMsg(data: any): boolean {
+  async pushMsg(data: any) {
     try {
       const options: request.CoreOptions = {
         headers: {
@@ -14,11 +14,7 @@ export class DingdingBot {
         },
         json: data,
       };
-      request.post(this._webhookUrl, options, function(
-        error,
-        response,
-        body,
-      ) {});
+      await request.post(this._webhookUrl, options);
     } catch (err) {
       console.error(err);
       return false;

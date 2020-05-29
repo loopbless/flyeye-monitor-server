@@ -5,7 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { MonitorType } from '@/monitor/monitor.enum';
+import { EventsType } from '@/events/events.enum';
 import { UserEntity } from '@/user/user.entity';
 import { ApplicationEntity } from '@/application/application.entity';
 
@@ -20,8 +20,8 @@ export class AlarmEntity {
   @Column({ comment: '报警源' })
   target: string;
 
-  @Column({name: 'data_type', default: MonitorType.ERROR, comment: '数据类型' })
-  dataType: MonitorType;
+  @Column({name: 'data_type', default: EventsType.ERROR, comment: '数据类型' })
+  dataType: EventsType;
 
   @Column('simple-array', {name: 'data_tags', comment: '数据标签' })
   dataTags: string[];
