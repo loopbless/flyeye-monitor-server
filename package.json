@@ -41,7 +41,7 @@
     "source-map": "^0.7.3",
     "stacktracey": "^1.2.127",
     "typeorm": "^0.2.24",
-    "ua-parser-js": "^0.7.21",
+    "ua-parser-js": "^0.7.24",
     "uglify-js": "^3.9.2"
   },
   "devDependencies": {
