@@ -40,7 +40,7 @@
     "rxjs": "^6.5.4",
     "source-map": "^0.7.3",
     "stacktracey": "^1.2.127",
-    "typeorm": "^0.2.24",
+    "typeorm": "^0.2.25",
     "ua-parser-js": "^0.7.21",
     "uglify-js": "^3.9.2"
   },
